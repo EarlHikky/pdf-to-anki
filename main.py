@@ -48,9 +48,9 @@ def make_anki_deck():
                         answer = ''
 
                     except ValueError as e:
-                        answer += line
+                        answer += ' ' + line
                 else:
-                    answer += line
+                    answer += ' ' + line
         package = genanki.Package(deck)
         package.write_to_file("Python_FAQ.apkg")
 
