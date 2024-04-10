@@ -1,4 +1,6 @@
+import argparse
 import html
+import os
 
 import genanki
 
@@ -17,7 +19,7 @@ def save_pdf_to_txt(path_to_pdf):
         f.write(pdf_text)
 
 
-def make_anki_deck():
+def make_anki_deck(deck_name):
     """
     Create an Anki deck from the contents of a file 'tmp.txt',
     and write the deck to a file 'Python_FAQ.apkg'.
@@ -29,15 +31,15 @@ def make_anki_deck():
         answer = ''
 
         # Generate a unique identifier for the deck
-        deck_id = hash("Python_FAQ_Deck")
-        deck = genanki.Deck(deck_id, "Python FAQ Deck")
+        deck_id = hash(deck_name)
+        deck = genanki.Deck(deck_id, deck_name)
 
         # Generate a unique identifier for the model
-        model_id = hash("Python_FAQ_Model")
-        model = genanki.Model(model_id, "Python FAQ Model",
-                              fields=[{"name": "Question"}, {"name": "Answer"}],
-                              templates=[{"name": "Card 1", "qfmt": "{{Question}}",
-                                          "afmt": "{{FrontSide}}<hr id='answer'>{{Answer}}"}])
+        model_id = hash(deck_name)
+        model = genanki.Model(model_id, deck_name,
+                              fields=[{'name': 'Question'}, {'name': 'Answer'}],
+                              templates=[{'name': 'Card 1', 'qfmt': '{{Question}}',
+                                          'afmt': '{{FrontSide}}<hr id="answer">{{Answer}}'}])
 
         # Iterate through the file
         for index, raw_line in enumerate(file):
@@ -66,12 +68,19 @@ def make_anki_deck():
                     answer += ' ' + line
         # Create and save the deck to a file
         package = genanki.Package(deck)
-        package.write_to_file("Python_FAQ.apkg")
+        package.write_to_file(f'{deck_name}.apkg')
+        os.remove('tmp.txt')
 
 
 def main():
-    save_pdf_to_txt('1.pdf')
-    make_anki_deck()
+    parser = argparse.ArgumentParser(description='Convert PDF to text and generate Anki deck.')
+    parser.add_argument('pdf_path', type=str, help='Path to the PDF file')
+    parser.add_argument('--deck_name', type=str, help='Name of the Anki deck (default: PDF filename)', default=None)
+    args = parser.parse_args()
+
+    save_pdf_to_txt(args.pdf_path)
+    deck_name = args.deck_name if args.deck_name else os.path.splitext(os.path.basename(args.pdf_path))[0]
+    make_anki_deck(deck_name)
 
 
 if __name__ == '__main__':
