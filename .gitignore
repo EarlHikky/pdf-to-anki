@@ -161,3 +161,7 @@ cython_debug/
 
 *.sqlite
 .DS_Store
+
+*.apkg
+*.png
+*.txt
