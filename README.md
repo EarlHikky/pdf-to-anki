@@ -12,10 +12,8 @@ This Python script allows you to generate Anki decks from PDF files containing F
 
 1. Ensure you have Python installed on your system.
 2. Install required dependencies using `pip`.
-3. Place your PDF file containing FAQ-style content in the root directory.
-4. Update the `path_to_pdf` variable in the script with the filename of your PDF.
-5. Run the script using `python script_name.py`.
-6. The Anki deck will be generated as `Python_FAQ.apkg` in the root directory.
+3. Run the script using `python main.py <path-to-pdf> --deck_name <deck-name>`.
+4 The Anki deck will be generated as `<deck-name>.apkg` in the root directory.
 
 ## Notes
 
@@ -23,10 +21,6 @@ This Python script allows you to generate Anki decks from PDF files containing F
 - Questions and answers are separated by a newline.
 - The script uses `pdfminer.six` to extract text from the PDF file, so ensure it's properly formatted and readable.
 - HTML tags within questions and answers are escaped to prevent formatting issues in Anki.
-
-## Example
-
-Suppose you have a PDF file named `python_faq.pdf` containing FAQ-style content. You would update the `path_to_pdf` variable in the script with `'python_faq.pdf'` and then run the script.
 
 ## License
 
